@@ -1,10 +1,50 @@
+import threading
+from time import sleep
+import json
+
 from flask import Flask
+from filelock import FileLock
+
+URL_FILENAME = 'url.txt'
+LOCK_FILENAME = 'url.lock'
+
+def log(message):
+    """print to stdout as basic Google App Engine "structured log"
+    https://cloud.google.com/run/docs/logging#run_manual_logging-python
+    """
+    entry = dict(severity='NOTICE',
+                 component=__name__,
+                 message=message)
+    print(json.dumps(entry))
+
+def watch():
+    log("worker loop started")
+    while True:
+        with FileLock('/tmp/'+LOCK_FILENAME) as lock, open(URL_FILENAME) as url_file:
+            log("lock obtained")
+            url = url_file.read().strip()
+            # TODO, use file
+            sleep(60)
+        # retry
+        sleep(30)
+
+log("running worker thread")
+threading.Thread(target=watch).start()
 
 app = Flask(__name__)
 
 @app.route('/')
 def hello():
-    return 'Hello World!'
+    try:
+        with open('/tmp/'+LOCK_FILENAME) as lockfile:
+            opened = ' '+'/tmp/'+LOCK_FILENAME+' exists!'
+    except FileNotFoundError:
+        opened = ''
+    return 'Hello World!'+opened
+
+@app.route('/signup', methods=['POST'])
+def signup():
+    return 'Thanks!'
 
 if __name__ == '__main__':
     # local test server

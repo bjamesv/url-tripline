@@ -1,13 +1,11 @@
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp import util
+from flask import Flask
 
-class MainHandler(webapp.RequestHandler):
-    def get(self):
-        self.response.out.write('Hello world!')
+app = Flask(__name__)
 
-def main():
-    application = webapp.WSGIApplication(['/', MainHandler)], debug=True)
-    util.run_wsgi_app(application)
+@app.route('/')
+def hello():
+    return 'Hello World!'
 
 if __name__ == '__main__':
-    main()
+    # local test server
+    app.run(host='127.0.0.1', port=8080, debug=True)

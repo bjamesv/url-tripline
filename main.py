@@ -5,8 +5,11 @@ import json
 from flask import Flask
 from filelock import FileLock
 
+import alert
+
 URL_FILENAME = 'url.txt'
 LOCK_FILENAME = 'url.lock'
+ALERT_MOBILE_NUMBER='555.555.5555'.replace('.','')
 
 def log(message):
     """print to stdout as basic Google App Engine "structured log"
@@ -23,8 +26,9 @@ def watch():
         with FileLock('/tmp/'+LOCK_FILENAME) as lock, open(URL_FILENAME) as url_file:
             log("lock obtained")
             url = url_file.read().strip()
-            # TODO, use file
-            sleep(60)
+            message="Test-Test! Order @ {}".format(url)
+            alert.send_sms(ALERT_MOBILE_NUMBER, message)
+            sleep(60)# TODO, remove debug
         # retry
         sleep(30)
 

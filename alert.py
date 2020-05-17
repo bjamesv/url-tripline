@@ -1,13 +1,19 @@
 from twilio.rest import Client
 
-US_TWILIO_NUMBER='555.555.5555'.replace('.','')
-TWILIO_ACCOUNT_SID='ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
-TWILIO_AUTH_TOKEN='your_auth_token' #TODO: migrate to berglas
+def send_sms(twilio_sid, twilio_auth_token, twilio_from_number, us_mobile_number, message):
+    """
+    Send SMS via Twilio
 
-def send_sms(us_mobile_number, message):
-    client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+    Keyword Arguments:
+    twilio_sid  -- String, Twilio account SID (34 character "AC*" format)
+    twilio_auth_token  -- String, Twilio secret auth token
+    twilio_from_number  -- String, representing sending 10-digit US number
+    us_mobile_number  -- String, 10-digit US number to receive the SMS
+    message  -- String, representing the message to send
+    """
+    client = Client(twilio_sid, twilio_auth_token)
 
     sms_message = client.messages.create(
         body=message,
-        from_='+1{}'.format(US_TWILIO_NUMBER),
+        from_='+1{}'.format(twilio_from_number),
         to='+1{}'.format(us_mobile_number))

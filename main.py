@@ -10,6 +10,11 @@ import alert
 import config
 import url_watch
 
+# consolidate account arguments into a set we can unpack
+ALERT_BASE_ARGS_SET=(config.TWILIO_ACCOUNT_SID,
+                     config.TWILIO_AUTH_TOKEN,
+                     config.US_TWILIO_NUMBER)
+
 def log(message):
     """print to stdout as basic Google App Engine "structured log"
     https://cloud.google.com/run/docs/logging#run_manual_logging-python
@@ -47,11 +52,11 @@ def watch(flask_context):
                 if changes.difference(old):
                     opened=str(changes.difference(old))[:75]
                     message="{} {} {}...".format(config.CHANGE_MESSAGE_PREFIX,url,opened)
-                    alert.send_sms(config.ALERT_MOBILE_NUMBER, message)
+                    alert.send_sms(*ALERT_BASE_ARGS_SET, config.ALERT_MOBILE_NUMBER, message)
                     # Send weekly red-alert!
                     if (datetime.utcnow() >= weekly_msg_sent+timedelta(days=7)
                             and config.WEEKLY_ALERT):
-                        alert.send_sms(config.WEEKLY_ALERT_NUMBER, config.WEEKLY_MSG)
+                        alert.send_sms(*ALERT_BASE_ARGS_SET, config.WEEKLY_ALERT_NUMBER, config.WEEKLY_MSG)
                         weekly_msg_sent = datetime.utcnow() # mark send time
                 else:
                     if old.difference(changes):

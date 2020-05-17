@@ -49,9 +49,15 @@ def watch(flask_context):
                     continue
                 old = previous_changes
                 previous_changes = changes #save
-                if changes.difference(old):
-                    opened=str(changes.difference(old))[:75]
-                    message="{} {} {}...".format(config.CHANGE_MESSAGE_PREFIX,url,opened)
+                if config.ALERT_ON_NEW: # Check if primary alert is for new or removed items
+                    changes = changes.difference(old)
+                    reverse_changes = old.difference(changes)
+                else:
+                    changes = old.difference(changes)
+                    reverse_changes = changes.difference(old)
+                if changes:
+                    preview=str(changes)[:75]
+                    message="{} {} {}...".format(config.CHANGE_MESSAGE_PREFIX,url,preview)
                     alert.send_sms(*ALERT_BASE_ARGS_SET, config.ALERT_MOBILE_NUMBER, message)
                     # Send weekly red-alert!
                     if (datetime.utcnow() >= weekly_msg_sent+timedelta(days=7)
@@ -59,9 +65,9 @@ def watch(flask_context):
                         alert.send_sms(*ALERT_BASE_ARGS_SET, config.WEEKLY_ALERT_NUMBER, config.WEEKLY_MSG)
                         weekly_msg_sent = datetime.utcnow() # mark send time
                 else:
-                    if old.difference(changes):
-                        gone = str(old.difference(changes))[:80]
-                        message="{} {}...".format(config.REVERSE_CHANGE_MSG_PREFIX,gone)
+                    if reverse_changes:
+                        preview = str(reverse_changes)[:80]
+                        message="{} {}...".format(config.REVERSE_CHANGE_MSG_PREFIX,preview)
                 sleep(120) # wait
             # retry
             sleep(30)

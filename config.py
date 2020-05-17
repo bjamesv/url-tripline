@@ -8,6 +8,7 @@ URL_FILENAME = 'url.txt'
 JS_LOADED_STRING='ConsumerPageHeading-title'
 HREF_CLASS_NAME='Consumer-reservation' # watch these anchors
 STARTING_CHANGE_LIST=set() #empty
+ALERT_ON_NEW=True # setting False will switch behavior of CHANGE_MESSAGE / REVERSE_CHANGE_MESSAGE 
 
 ALERT_MOBILE_NUMBER='555.555.5555'.replace('.','')
 CHANGE_MESSAGE_PREFIX="**Red-alert**: new pickup!"

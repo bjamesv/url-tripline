@@ -13,6 +13,7 @@ os.environ['PATH'] += ':'+os.path.dirname(os.path.realpath(__file__))+"/webdrive
 
 def get_changes(url, wait_string, watch_href_class):
     matching_href = set()
+    page_source = ''
     try:
         display = Display(visible=0, size=(1024, 768))
         display.start()
@@ -27,7 +28,8 @@ def get_changes(url, wait_string, watch_href_class):
                 soup = BeautifulSoup(elem.get_attribute('outerHTML'), 'html.parser')
                 full_anchor_element = str(soup.a)
                 matching_href.add(full_anchor_element)
+            page_source = driver.page_source
         display.stop()
-        return {'success': True, "result": matching_href}
+        return {'success': True, "result": matching_href, "debug": page_source}
     except Exception as e:
-        return {'success': False, 'msg': str(e)+traceback.format_exc()}
+        return {'success': False, 'msg': page_source+str(e)+traceback.format_exc()}

@@ -20,9 +20,13 @@ def get_changes(url, wait_string, watch_href_class):
         with webdriver.Firefox() as driver:
             driver.get(url)
             wait = WebDriverWait(driver, 30) # max-wait
-            load_ui = wait.until(
-                EC.presence_of_element_located((By.CLASS_NAME, wait_string))
-            )
+            try:
+                load_ui = wait.until(
+                    EC.presence_of_element_located((By.CLASS_NAME, wait_string))
+                )
+            except Exception as e:
+                page_source = driver.page_source
+                raise e
             for elem in driver.find_elements_by_class_name(watch_href_class):
                 # get full anchor element text
                 soup = BeautifulSoup(elem.get_attribute('outerHTML'), 'html.parser')

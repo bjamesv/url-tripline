@@ -1,6 +1,11 @@
 # url-tripline
 Python webapp, to watch a URL &amp; send SMS alerts when a change is detected.
 
+### Example
+![SMS alert screenshot](docs/example-screenshot1.png)
+
+Web scraping tools are by nature very individualized. There are many like it, but this one is mine.
+
 ## Architecture
 ARM (armhf / arm7+ 32bit)
 

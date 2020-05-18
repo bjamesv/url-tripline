@@ -6,7 +6,8 @@ US_TWILIO_NUMBER='555.555.5555'.replace('.','')
 
 URL_FILENAME = 'url.txt'
 JS_LOADED_STRING='ConsumerPageHeading-title'
-HREF_CLASS_NAME='Consumer-reservation' # watch these anchors
+WATCH_TAG_TYPE='a' # anchor
+WATCH_CLASS_NAME='Consumer-reservation' # watch these specific anchors
 STARTING_CHANGE_LIST=set() #empty
 ALERT_ON_NEW=True # setting False will switch behavior of CHANGE_MESSAGE / REVERSE_CHANGE_MESSAGE 
 

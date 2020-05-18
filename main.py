@@ -35,7 +35,7 @@ def watch(flask_context):
                 log("lock obtained")
                 url = url_file.read().strip()
                 try:
-                    output = url_watch.get_changes(url, config.JS_LOADED_STRING, config.HREF_CLASS_NAME)
+                    output = url_watch.get_changes(url, config.JS_LOADED_STRING, config.WATCH_CLASS_NAME, config.WATCH_TAG_TYPE)
                     if output['success']:
                         changes = output['result']
                         log(str(changes))

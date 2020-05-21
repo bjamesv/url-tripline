@@ -13,7 +13,7 @@ ALERT_ON_NEW=True # setting False will switch behavior of CHANGE_MESSAGE / REVER
 
 ALERT_MOBILE_NUMBER='555.555.5555'.replace('.','')
 CHANGE_MESSAGE_PREFIX="**Red-alert**: new pickup!"
-REVERSE_CHANGE_MESSAGE_PREFIX="Yellow-alert: pickup over"
+REVERSE_CHANGE_MSG_PREFIX="Yellow-alert: pickup over"
 
 WEEKLY_ALERT=True
 WEEKLY_ALERT_NUMBER='555.555.5555'.replace('.','')
